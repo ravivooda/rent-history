@@ -3,6 +3,7 @@
 from helpers import env_constants
 from flask import Flask, request, jsonify
 from api import api
+from settings import settings
 
 import traceback
 
@@ -10,7 +11,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return "<span style='color:red'>I am app 1</span>"
+    return "<span style='color:red'>Please look for something new in life</span>"
 
 @app.route('/api/<api_func>')
 def api_call(api_func):
@@ -43,5 +44,22 @@ def internal_error(error):
     return error
 
 if __name__ == "__main__":
+    # Checking for log file directory
+    log_dir = '/var/log/rent-history/'
+    log_path = log_dir + 'app.log'
+    try:
+        import os, errno
+        os.makedirs(log_dir)
+    except Exception, e:
+        pass
+    
+    import logging
+    logging.basicConfig(filename=log_path,level=logging.DEBUG)
+    logging.info('''
+**************************************************************
+*                      RENT_HISTORY START                    *
+**************************************************************
+''')    
+
     app.secret_key = "WishIKnewWhatTheSECRETWasForJugaado"
     app.run('0.0.0.0', 8080, debug=True)

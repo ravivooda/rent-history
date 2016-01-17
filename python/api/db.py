@@ -3,15 +3,16 @@
 
 import MySQLdb as mdb
 import sys
+from settings import settings
 
 def getDB(test=False):
     try:
-        con = mdb.connect('localhost','root','TeamUp2015','TEAMUP');
+        con = mdb.connect(settings.MYSQL_SERVER,settings.MYSQL_USERNAME,settings.MYSQL_PASSWORD,settings.MYSQL_DATABASE);
         if test:
             print "Awesome you connected"
         return con
     except Exception,e:
-        print "Error occurred in fetching the database"
+        print "Error occurred in fetching the database, Error: \n%s" % (e)
         return None
 
 def execute(query):
