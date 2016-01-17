@@ -21,8 +21,8 @@ def get_later_messages(thread_id,last_message_id,user_id):
     return messages, None
 
 def signup(user_name,display_name,email,password):
-    #Check for existing user
-    query = "SELECT * FROM users WHERE email = '%s' LIMIT 1" % email
+    # Check for existing user
+    query = "SELECT * FROM users WHERE email = '%s' OR fb_user_id = '%s'  LIMIT 1" % (email, )
     existing_user = db.read_one(query)
     if existing_user:
         return None, ["This email is already registered with us. If you forgot your password, please reset it.",]

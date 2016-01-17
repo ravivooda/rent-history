@@ -1,7 +1,6 @@
 USE rent_history;
 
-DROP TABLE IF EXISTS `houses`;
-CREATE TABLE `houses`(
+CREATE TABLE IF NOT EXISTS `houses`(
        `house_id` INT NOT NULL AUTO_INCREMENT,
        `house_desc` VARCHAR(1000) NOT NULL,
        `house_street_1` VARCHAR(100) NOT NULL,
@@ -18,4 +17,15 @@ CREATE TABLE `houses`(
        `last_updated` TIMESTAMP default now() on update now(),
 
        PRIMARY KEY(`house_id`)
-)
+);
+
+
+CREATE TABLE IF NOT EXISTS `users`(
+       `user_id` INT NOT NULL AUTO_INCREMENT,
+       `fb_user_id` INT NOT NULL,
+       `fb_user_token` INT NOT NULL,
+       `name` VARCHAR(100) NOT NULL,
+       `email` VARCHAR(100) NOT NULL,
+
+       PRIMARY KEY(`user_id`)
+);

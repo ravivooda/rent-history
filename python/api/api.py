@@ -33,17 +33,49 @@ class loggedin(object):
             return {'success': False, 'error': env_constants.NOT_LOGGED_IN_ERROR, 'should_logout': True}
         return self.f(*args)
 
+class with_args(object):
+    def __init__(self,must_args=[],test_args=[]):
+        self.test_args = test_args
+        self.must_args = must_args
+        
+    def __call__(self, f):
+        @wraps(f)
+        def decorated_function(*args, **kwds):
+            missing_params = []
+
+            # Checking for the MUST have parameters
+            for arg in self.must_args:
+                if not request.args.get(arg):
+                    missing_params.append(arg)
+
+            # Checking for the ATLEAST ONE have parameters
+            for arg_arr in self.test_args:
+                found = False
+                for arg in arg_arr:
+                    if request.args.get(arg):
+                        found = True;
+                        break;
+                if not found:
+                    missing_params.append(arg_arr)
+
+            if len(missing_params) > 0:
+                print missing_params
+                return {'success': False, 
+                        'error': env_constants.INVALID_REQUEST_ERROR,
+                        'missing_parameters': missing_params}
+            return f(*args, **kwds)
+        return decorated_function
+        
+
 ####################################################################################################
 #                                                                                                  #
 #                                         PUBLIC API                                               #
 #                                                                                                  #
 ####################################################################################################
 @public()
+# for now user_name, display_name, email, password are required
+@with_args(['user_name', 'display_name', 'email', 'password'])
 def signup():
-    # for now user_name, display_name, email, password are required
-    if not request.args.get('user_name') or not request.args.get('display_name') or not request.args.get('email') or not request.args.get('password'):
-        return {'success': False, 'error': env_constants.INVALID_REQUEST_ERROR}
-    
     user_name = request.args.get('user_name')
     display_name = request.args.get('display_name')
     email = request.args.get('email')
@@ -55,9 +87,8 @@ def signup():
     return {'success': True, 'my_info':user}
 
 @public()
+@with_args(['password'], [['user_name', 'email']])
 def login():
-    if (not request.args.get('user_name') and not request.args.get('email')) or not request.args.get('password'):
-        return {'success': False, 'error': env_constants.INVALID_REQUEST_ERROR}
     user_name = None
     email = None
     password = request.args.get('password')
@@ -81,20 +112,16 @@ def login():
 #                                                                                                  #
 ####################################################################################################
 @loggedin
+@with_args(['user_id'])
 def get_user():
-    user_id = request.args.get('user_id')
-    if not user_id:
-        return {'success':False,'error':env_constants.INVALID_REQUEST_ERROR}
-    
     user = logic.get_user(user_id)
     if not user:
         return {'success':False,'error':'No such user exists'}
     return {'success':True, 'user':user}
 
 @loggedin
+@with_args(['user_id'])
 def create_thread():
-    if not request.args.get('user_id'):
-        return {'success': False, 'error': env_constants.INVALID_REQUEST_ERROR}
     user_id = request.args.get('user_id')
     new_thread, error = logic.create_thread(user_id)
     if error:
