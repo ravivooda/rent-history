@@ -7,11 +7,23 @@ from settings import settings
 
 import traceback
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="template")
 
 @app.route('/')
 def index():
-    return "<span style='color:red'>Please look for something new in life</span>"
+    return app.send_static_file('index.html')
+
+@app.route('/test')
+def test():
+    return app.send_static_file('test.html');
+
+@app.route('/search')
+def search():
+    pass
+
+@app.route('/new')
+def new():
+    return app.send_static_file('new.html')
 
 @app.route('/api/<api_func>')
 def api_call(api_func):
@@ -59,7 +71,7 @@ if __name__ == "__main__":
 **************************************************************
 *                      RENT_HISTORY START                    *
 **************************************************************
-''')    
+''')
 
     app.secret_key = "WishIKnewWhatTheSECRETWasForJugaado"
     app.run('0.0.0.0', 8080, debug=True)

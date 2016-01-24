@@ -1,2 +1,3 @@
 # Do not include the settings folder
 settings
+.pyc
