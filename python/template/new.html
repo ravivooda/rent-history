@@ -1,5 +1,6 @@
 <html>
   <head>
+    <link rel="stylesheet" type="text/css" href="template/css/style.css">
     <style>
       	div#new-form{
 		width: 700px;
@@ -7,22 +8,10 @@
 		padding: 50px 20px;
 		margin: 0 auto;
 	}
-	
-	p.house-item-title {
-		text-align: left;
-		/*padding-left: 50px;*/
-		padding: 0;
-	}
-
-	div.house-item {
-		padding: 20px 0px;
-	}
-	
-	.house-item-input {
-		width: 650px;
-		float: left;
-	}
     </style>
+    <script src="template/js/actions.js">
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
   </head>
 
   <body>
@@ -88,7 +77,9 @@
 	  Cons
 	</p>
 	<textarea rows="2" cols="100" id="house-cons" class="house-item-input" placeholder="Contras to be noticed."></textarea>
-      </div>      
+      </div>
+
+      <button id="submit-button" type="button" class="submit-button" onclick="addNewListing()">Add Listing</button>
 
     </div>
   </body>

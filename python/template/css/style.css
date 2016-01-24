@@ -23,9 +23,6 @@
 }
 
 
-
-
-
 /*
   Styles for the Google Search Box
 */
@@ -34,4 +31,31 @@
 }
 .pac-item > * {
     font-size: 20px;
+}
+
+
+/*
+  House Detail Item
+*/
+.house-item {
+    padding: 20px 0px;
+}
+
+.house-item-title {
+    text-align: left;
+    /*padding-left: 50px;*/
+    padding: 0;
+}
+
+.house-item-input {
+    width: 650px;
+    float: left;
+}
+
+.submit-button {
+    color: white;
+    font-size: 15px;
+    padding: 5px 20px;
+    background: red;
+    margin-top: 20px;
 }
